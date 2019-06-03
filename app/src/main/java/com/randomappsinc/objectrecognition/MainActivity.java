@@ -236,9 +236,9 @@ public class MainActivity extends AppCompatActivity implements PhotoTakerManager
                 }
                 break;
             case CAMERA_CODE:
-                noImageText.setVisibility(View.GONE);
-                analysisOverlay.setVisibility(View.GONE);
                 if (resultCode == RESULT_OK) {
+                    analysisOverlay.setVisibility(View.GONE);
+                    noImageText.setVisibility(View.GONE);
                     photoTakerManager.processTakenPhoto(this);
                 } else if (resultCode == RESULT_CANCELED) {
                     photoTakerManager.deleteLastTakenPhoto();
