@@ -8,5 +8,7 @@
     <string name="model_fail">Failed to load model</string>
     <string name="analysis_fail">Failed to analyze image</string>
 
+    <string name="image_not_loaded">Image isn\'t loaded yet.</string>
+
     <string name="analyze">Analyze</string>
 </resources>

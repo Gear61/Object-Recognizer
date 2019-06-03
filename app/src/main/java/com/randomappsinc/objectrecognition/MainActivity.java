@@ -1,23 +1,17 @@
 package com.randomappsinc.objectrecognition;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.ml.common.FirebaseMLException;
 import com.google.firebase.ml.common.modeldownload.FirebaseLocalModel;
 import com.google.firebase.ml.common.modeldownload.FirebaseModelManager;
@@ -26,7 +20,6 @@ import com.google.firebase.ml.custom.FirebaseModelInputOutputOptions;
 import com.google.firebase.ml.custom.FirebaseModelInputs;
 import com.google.firebase.ml.custom.FirebaseModelInterpreter;
 import com.google.firebase.ml.custom.FirebaseModelOptions;
-import com.google.firebase.ml.custom.FirebaseModelOutputs;
 import com.squareup.picasso.Picasso;
 
 import java.io.BufferedReader;
@@ -36,7 +29,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -133,6 +125,12 @@ public class MainActivity extends AppCompatActivity {
     public void analyze() {
         if (interpreter == null) {
             UIUtils.showLongToast(R.string.model_fail, this);
+            return;
+        }
+
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
+        if (bitmapDrawable == null) {
+            UIUtils.showLongToast(R.string.image_not_loaded, this);
             return;
         }
 
