@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1008131261125",
+    "firebase_url": "https://object-recognizer-8faa9.firebaseio.com",
+    "project_id": "object-recognizer-8faa9",
+    "storage_bucket": "object-recognizer-8faa9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1008131261125:android:bcedf17f7cd11ad2",
+        "android_client_info": {
+          "package_name": "com.randomappsinc.objectrecognition"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1008131261125-0o1jgqm5he9b0eth439c8e6q5inuvpt3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPY27pGBOJM0U4lUbwL5qVRK2Gsxx-Pbg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1008131261125-0o1jgqm5he9b0eth439c8e6q5inuvpt3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

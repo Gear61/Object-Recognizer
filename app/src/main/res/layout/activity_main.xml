@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="RtlHardcoded"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <com.randomappsinc.objectrecognition.SquareImageView
+                android:id="@+id/image_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+            <com.randomappsinc.objectrecognition.SquareTextView
+                android:id="@+id/no_image_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:gravity="center"
+                android:text="@string/no_image_selected"
+                android:textSize="25sp"
+                android:textColor="@color/dark_gray"
+                />
+
+            <TextView
+                android:id="@+id/analysis_overlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:padding="8dp"
+                android:background="@drawable/rounded_transparent_black_rectangle"
+                android:textColor="@color/white"
+                android:textSize="19sp"
+                android:shadowColor="@color/shadow_black"
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:shadowRadius="1"
+                android:visibility="gone"
+                />
+        </FrameLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            />
+
+        <LinearLayout
+            android:id="@+id/image_options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/take_with_camera"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginRight="8dp"
+                android:text="@string/camera_button_text"
+                android:maxLines="1"
+                style="@style/button"
+                />
+
+            <TextView
+                android:id="@+id/upload_from_file"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:text="@string/file_button_text"
+                android:maxLines="1"
+                style="@style/button"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/analyze"
+            android:text="@string/analyze"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            style="@style/button"
+            />
+    </LinearLayout>
+</ScrollView>

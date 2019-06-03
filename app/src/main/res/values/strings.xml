@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Object Recognition</string>
+    <string name="camera_button_text">With Camera</string>
+    <string name="file_button_text">From File</string>
+    <string name="no_image_selected">No image selected.</string>
+
+    <string name="labels_fail">Failed to load labels</string>
+    <string name="model_fail">Failed to load model</string>
+    <string name="analysis_fail">Failed to analyze image</string>
+
+    <string name="analyze">Analyze</string>
+</resources>
