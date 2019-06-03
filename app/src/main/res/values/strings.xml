@@ -11,4 +11,8 @@
     <string name="image_not_loaded">Image isn\'t loaded yet.</string>
 
     <string name="analyze">Analyze</string>
+
+    <string name="take_photo_with_camera_failed">
+        Sorry, we are unable to process your device\'s camera photos.
+    </string>
 </resources>

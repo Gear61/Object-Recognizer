@@ -1,7 +1,9 @@
 package com.randomappsinc.objectrecognition;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.ml.common.FirebaseMLException;
@@ -37,10 +40,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PhotoTakerManager.Listener {
 
-    // Intent codes
+    // Request codes
     private static final int IMAGE_FILE_REQUEST_CODE = 1;
+    private static final int CAMERA_CODE = 2;
 
     private static final String LABEL_PATH = "labels.txt";
     private static final String LOCAL_MODEL_ASSET = "mobilenet_v1_1.0_224_quant.tflite";
@@ -64,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private List<String> labelList;
     private FirebaseModelInterpreter interpreter;
     private FirebaseModelInputOutputOptions dataOptions;
+    private PhotoTakerManager photoTakerManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initModel();
+        photoTakerManager = new PhotoTakerManager(this);
     }
 
     private void initModel() {
@@ -110,7 +116,11 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.take_with_camera)
     public void takeWithCamera() {
-
+        if (PermissionUtils.isPermissionGranted(Manifest.permission.CAMERA, this)) {
+            startCameraPage();
+        } else {
+            PermissionUtils.requestPermission(this, Manifest.permission.CAMERA, CAMERA_CODE);
+        }
     }
 
     @OnClick(R.id.upload_from_file)
@@ -139,7 +149,8 @@ public class MainActivity extends AppCompatActivity {
             FirebaseModelInputs inputs = new FirebaseModelInputs.Builder().add(imgData).build();
             interpreter
                     .run(inputs, dataOptions)
-                    .addOnFailureListener(e -> UIUtils.showLongToast(R.string.analysis_fail, MainActivity.this))
+                    .addOnFailureListener(e ->
+                            UIUtils.showLongToast(R.string.analysis_fail, MainActivity.this))
                     .continueWith(
                             task -> {
                                 byte[][] labelProbArray = task.getResult().getOutput(0);
@@ -162,7 +173,8 @@ public class MainActivity extends AppCompatActivity {
 
     private synchronized List<String> getTopLabels(byte[][] labelProbArray) {
         for (int i = 0; i < labelList.size(); ++i) {
-            sortedLabels.add(new AbstractMap.SimpleEntry<>(labelList.get(i), (labelProbArray[0][i] & 0xff) / 255.0f));
+            sortedLabels.add(new AbstractMap.SimpleEntry<>(
+                    labelList.get(i), (labelProbArray[0][i] & 0xff) / 255.0f));
             if (sortedLabels.size() > RESULTS_TO_SHOW) {
                 sortedLabels.poll();
             }
@@ -223,6 +235,55 @@ public class MainActivity extends AppCompatActivity {
                             .into(imageView);
                 }
                 break;
+            case CAMERA_CODE:
+                noImageText.setVisibility(View.GONE);
+                analysisOverlay.setVisibility(View.GONE);
+                if (resultCode == RESULT_OK) {
+                    photoTakerManager.processTakenPhoto(this);
+                } else if (resultCode == RESULT_CANCELED) {
+                    photoTakerManager.deleteLastTakenPhoto();
+                }
+                break;
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+        if (requestCode != CAMERA_CODE
+                || grantResults.length <= 0
+                || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            return;
+        }
+
+        // Camera permission granted
+        startCameraPage();
+    }
+
+    private void startCameraPage() {
+        Intent takePhotoIntent = photoTakerManager.getPhotoTakingIntent(this);
+        if (takePhotoIntent == null) {
+            UIUtils.showLongToast(R.string.take_photo_with_camera_failed, this);
+        } else {
+            startActivityForResult(takePhotoIntent, CAMERA_CODE);
+        }
+    }
+
+    @Override
+    public void onTakePhotoFailure() {
+        UIUtils.showLongToast(R.string.take_photo_with_camera_failed, this);
+    }
+
+    @Override
+    public void onTakePhotoSuccess(Uri takenPhotoUri, float rotation) {
+        runOnUiThread(() -> Picasso.get()
+                .load(takenPhotoUri)
+                .rotate(rotation)
+                .fit()
+                .centerCrop()
+                .into(imageView));
     }
 }
