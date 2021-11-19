@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.randomappsinc.objectrecognition"
     >
 
@@ -35,6 +36,8 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
+            android:exported="true"
+            tools:ignore="LockedOrientationActivity"
             >
 
             <intent-filter>

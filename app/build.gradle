@@ -1,11 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 31
     defaultConfig {
+        configurations.all {
+            resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
+        }
+
         applicationId "com.randomappsinc.objectrecognition"
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0.0"
     }
@@ -15,9 +19,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    aaptOptions {
-        noCompress "tflite"
-    }
     lintOptions {
         disable 'GoogleAppIndexingWarning'
         baseline file("lint-baseline.xml")
@@ -26,15 +27,24 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    androidResources {
+        noCompress 'tflite'
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+
     implementation 'com.google.firebase:firebase-ml-model-interpreter:21.0.0'
-    implementation 'com.google.firebase:firebase-core:17.1.0'
+    implementation 'com.google.firebase:firebase-core:20.0.0'
+
+    // implementation platform('com.google.firebase:firebase-bom:29.0.0')
+    // implementation 'com.google.firebase:firebase-ml-modeldownloader-ktx'
+    // implementation 'org.tensorflow:tensorflow-lite:2.3.0'
+
     implementation ('com.joanzapata.iconify:android-iconify-ionicons:2.2.2') {
         exclude group: 'com.android.support'
     }
