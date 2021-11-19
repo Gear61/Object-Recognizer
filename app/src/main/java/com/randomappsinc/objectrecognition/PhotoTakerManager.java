@@ -24,8 +24,8 @@ class PhotoTakerManager {
         void onTakePhotoSuccess(Uri takenPhotoUri, float rotation);
     }
 
-    private Listener listener;
-    private Handler backgroundHandler;
+    private final Listener listener;
+    private final Handler backgroundHandler;
     private Uri currentPhotoUri;
 
     PhotoTakerManager(Listener listener) {
@@ -38,9 +38,6 @@ class PhotoTakerManager {
     @Nullable
     Intent getPhotoTakingIntent(Context context) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(context.getPackageManager()) == null) {
-            return null;
-        }
         File currentPhotoFile = FileUtils.createImageFile(context);
         if (currentPhotoFile != null) {
             currentPhotoUri = FileProvider.getUriForFile(
