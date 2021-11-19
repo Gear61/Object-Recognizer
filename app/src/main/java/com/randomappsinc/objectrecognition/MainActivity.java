@@ -222,17 +222,22 @@ public class MainActivity extends AppCompatActivity implements PhotoTakerManager
                     Uri uri = resultData.getData();
 
                     // Persist ability to read from this file
-                    int takeFlags = resultData.getFlags()
-                            & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    getContentResolver().takePersistableUriPermission(uri, takeFlags);
-
-                    String uriString = uri.toString();
-                    Picasso.get()
-                            .load(uriString)
-                            .fit()
-                            .centerCrop()
-                            .into(imageView);
+                    getContentResolver().takePersistableUriPermission(
+                            uri,
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    );
+                    try {
+                        float rotation = ImageUtils.getImageRotation(this, uri);
+                        String uriString = uri.toString();
+                        Picasso.get()
+                                .load(uriString)
+                                .rotate(rotation)
+                                .fit()
+                                .centerCrop()
+                                .into(imageView);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             case CAMERA_CODE:
