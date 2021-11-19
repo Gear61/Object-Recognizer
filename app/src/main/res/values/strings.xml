@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Object Recognition</string>
+    <string name="app_name">Object Recognizer</string>
     <string name="camera_button_text">With Camera</string>
     <string name="file_button_text">From File</string>
     <string name="no_image_selected">No image selected.</string>
